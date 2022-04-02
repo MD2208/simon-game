@@ -28,11 +28,14 @@ var clickPattern = [];
 $(".btn").click(function(event) {
   boxAnimation(event.target);
   clickPattern.push(event.target.id);
-  if (clickPattern.length == gamePattern.length) {
-    if (checkAnswer(gamePattern.length) === true) {
+  if (clickPattern.length >0) {
+    if (checkAnswer(gamePattern.length,clickPattern.length) === true ) {
+      if(clickPattern.length===gamePattern.length){//complete level actions
       setTimeout(nextSequence(), 1000);
+      $("h1").text("Level "+(gamePattern.length));
+      clickPattern = [];
     }
-    clickPattern = [];
+    }
   }
 });
 // MOUSE EVENT ANIMATION
@@ -43,8 +46,8 @@ function boxAnimation(clr) {
   }, 100);
 }
 // CHECKING ANSWERS
-function checkAnswer(currentLevel) {
-  for (var i = 0; i < currentLevel; i++) {
+function checkAnswer(currentLevel,clickLevel) {
+  for (var i = 0; i < clickLevel; i++) {
     if (clickPattern[i] !== gamePattern[i]) {
       $("body").addClass("game-over");
       setTimeout(function() {
@@ -59,6 +62,6 @@ function checkAnswer(currentLevel) {
       return false;
     }
   }
-  $("h1").text("Level "+(currentLevel+1));
+
   return true;
 }
